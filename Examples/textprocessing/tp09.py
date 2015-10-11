@@ -21,8 +21,6 @@ def read_num_names():
         else:
             print("That was not a number.  Try again.")
 
-    return result
-
 class NameParseError(Exception):
     pass
 
@@ -32,6 +30,7 @@ def parse_name(value):
     :return: return a valid name or raise an exception
     '''
     if not ',' in value:
+        # Yea, we raised an exception because the format was wrong, but where does the exception come from?
         raise NameParseError
     else:
         return value
@@ -41,34 +40,36 @@ def read_names(num_names):
     :param num_names: the number of names to read
     :return: prompt the user to enter a name in the specified format: last, first
     '''
+    # Q: How do be detect that the correct format has been used?
+    # Q: What should we do if it isn't correct?
     names = []
-    num_mistakes = 0
-
     for i in range(num_names):
         result = input("Please enter name {}: ".format(i))
+
+        #---------------------------------------------------------------------
+        # Note: We need to implement the requirements for handling errors here
+        #---------------------------------------------------------------------
+
+        # Let's take a similar approach to parsing the name as was done for the integer
         try:
+            # Whatever result comes from the user will be passed to our parse_name function and return either a
+            # valid name or will raise an exception
             name = parse_name(result)
         except NameParseError:
-            num_mistakes += 1
-            print(">> Wrong format ... should be 'Last, First'.")
-            print(">> You have done this {} time(s) already.  Fixing input ...".format(num_mistakes))
+            # Per the requirements, if the input format is incorrect, we report it and fix it
+            pass
 
-            first, last = result.split(' ')
-            name = "{}, {}".format(last, first)
-
-        names.append(name)
+        names.append(result)
 
     return names
 
-def display_names(names, ascending = True):
+def display_names(names, direction):
     '''
     :param names: a list of names to be displayed
     :param direction: the direction of display: ascending or descending
     :return: None
     '''
-    names.sort(reverse=not ascending)
-    for name in names:
-        print("\t{}".format(name))
+    pass
 
 def main():
     # Prompt for number of names in list
@@ -79,11 +80,11 @@ def main():
 
     # Display names sorted
     print("Displaying names sorted (ascending)")
-    display_names(names)
+    display_names(names, direction=ascending)
 
 
     print("Displaying names sorted (descending)")
-    display_names(names, False)
+    display_names(names, direction=descending)
 
 
 if __name__ == "__main__":

@@ -21,8 +21,6 @@ def read_num_names():
         else:
             print("That was not a number.  Try again.")
 
-    return result
-
 class NameParseError(Exception):
     pass
 
@@ -46,9 +44,14 @@ def read_names(num_names):
 
     for i in range(num_names):
         result = input("Please enter name {}: ".format(i))
+
+        # Let's take a similar approach to parsing the name as was done for the integer
         try:
+            # Whatever result comes from the user will be passed to our parse_name function and return either a
+            # valid name or will raise an exception
             name = parse_name(result)
         except NameParseError:
+            # Per the requirements, if the input format is incorrect, we report it and fix it
             num_mistakes += 1
             print(">> Wrong format ... should be 'Last, First'.")
             print(">> You have done this {} time(s) already.  Fixing input ...".format(num_mistakes))
@@ -66,6 +69,8 @@ def display_names(names, ascending = True):
     :param direction: the direction of display: ascending or descending
     :return: None
     '''
+    # Q: How to handle direction?  Ascending vs Descending?
+    # A: Sort accepts a reverse parameter whose default is False (or ascending)
     names.sort(reverse=not ascending)
     for name in names:
         print("\t{}".format(name))
